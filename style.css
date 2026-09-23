@@ -1,0 +1,28 @@
+body {
+    background: #1a1a2e;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 100px;
+}
+#timer {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.block {
+    background: #16213e;
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 100px;
+}
+span {
+    font-size: 50px;
+    font-weight: bold;
+    color: #00ffff;
+}
+p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #aaa;
+}
