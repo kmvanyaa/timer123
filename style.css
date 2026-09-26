@@ -16,6 +16,11 @@ body {
     border-radius: 10px;
     min-width: 100px;
 }
+.block:hover {
+    background: #4a3775;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
 span {
     font-size: 50px;
     font-weight: bold;
