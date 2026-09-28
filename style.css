@@ -16,6 +16,7 @@ body {
     border-radius: 10px;
     min-width: 100px;
     border: 2px solid #ff00ff;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
 }
 .block:hover {
     background: #4a3775;
