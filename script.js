@@ -1,3 +1,6 @@
+document.getElementById('theme-btn').addEventListener('click', function() {
+    document.body.classList.toggle('light-theme');
+});
 function updateTimer() {
     const now = new Date();
     const newYear = new Date(now.getFullYear() + 1, 0, 1);

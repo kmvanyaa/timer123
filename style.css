@@ -39,3 +39,14 @@ p {
     font-size: 14px;
     color: #ccc;
 }
+body.light-theme {
+    background: #f4f4f9;
+    color: #333;
+}
+body.light-theme .block {
+    background: #e0e0e0;
+    color: #333;
+}
+body.light-theme span {
+    color: #d100d1; /* Чуть темнее розовый для светлого фона */
+}
