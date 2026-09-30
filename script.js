@@ -1,3 +1,12 @@
+const quotes = [
+    "Всё получится! Главное — не сдаваться.",
+    "Каждый день — это новый шанс.",
+    "Ты способна на большее, чем думаешь.",
+    "Код — это творчество. Твори!",
+    "Маленькие шаги ведут к большим целям."
+];
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+document.getElementById('quote').textContent = randomQuote;
 document.getElementById('theme-btn').addEventListener('click', function() {
     document.body.classList.toggle('light-theme');
 });
