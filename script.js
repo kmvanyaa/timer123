@@ -1,3 +1,4 @@
+// --- Цитаты ---
 const quotes = [
     "Всё получится! Главное — не сдаваться.",
     "Каждый день — это новый шанс.",
@@ -7,9 +8,13 @@ const quotes = [
 ];
 const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 document.getElementById('quote').textContent = randomQuote;
+
+// --- Переключатель темы ---
 document.getElementById('theme-btn').addEventListener('click', function() {
     document.body.classList.toggle('light-theme');
 });
+
+// --- Логика таймера ---
 function updateTimer() {
     const now = new Date();
     const newYear = new Date(now.getFullYear() + 1, 0, 1);
@@ -20,11 +25,17 @@ function updateTimer() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+    // Обновляем цифры таймера (с добавлением нулей)
+    document.getElementById('days').textContent = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+    // НОВОЕ: Обновляем текущее время и дату
+    document.getElementById('current-time').textContent = "Сейчас: " + now.toLocaleTimeString('ru-RU');
+    document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU');
 }
 
+// Запускаем таймер каждую секунду
 setInterval(updateTimer, 1000);
 updateTimer();
