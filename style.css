@@ -11,7 +11,8 @@ body {
     gap: 30px;
 }
 .block {
-    background: #3b2a5e;
+    background: rgba(59, 42, 94, 0.4);
+    backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 10px;
     min-width: 100px;
