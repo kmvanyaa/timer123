@@ -29,6 +29,7 @@ span {
     font-weight: bold;
     color: #ff00ff;
     animation: pulse 1s infinite;
+    font-family: 'Courier New', monospace;
 }
 @keyframes pulse {
     0% { transform: scale(1); }
