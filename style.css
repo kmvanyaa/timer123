@@ -1,15 +1,30 @@
 body {
-    background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+    background: #2d1b4e;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
     padding-top: 100px;
+    transition: background 0.5s ease, color 0.5s ease;
 }
+
+/* Градиентный заголовок */
+h1 {
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
 #timer {
     display: flex;
     justify-content: center;
     gap: 30px;
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px;
 }
+
 .block {
     background: rgba(59, 42, 94, 0.4);
     backdrop-filter: blur(10px);
@@ -18,29 +33,44 @@ body {
     min-width: 100px;
     border: 2px solid #ff00ff;
     box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+    transition: all 0.3s ease;
 }
+
 .block:hover {
     background: #4a3775;
     transform: translateY(-5px);
-    transition: all 0.3s ease;
 }
+
 span {
     font-size: 50px;
     font-weight: bold;
     color: #ff00ff;
-    animation: pulse 1s infinite;
     font-family: 'Courier New', monospace;
+    animation: pulse 1s infinite;
 }
+
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
+    0% { 
+        transform: scale(1); 
+        text-shadow: 0 0 0px #ff00ff; 
+    }
+    50% { 
+        transform: scale(1.25); 
+        text-shadow: 0 0 25px #ff00ff, 0 0 10px #ff00ff; 
+    }
+    100% { 
+        transform: scale(1); 
+        text-shadow: 0 0 0px #ff00ff; 
+    }
 }
+
 p {
     margin: 5px 0 0;
     font-size: 14px;
-    color: #ccc;
+    color: #e0c8ff;
 }
+
+/* Светлая тема */
 body.light-theme {
     background: #f4f4f9;
     color: #333;
@@ -48,10 +78,32 @@ body.light-theme {
 body.light-theme .block {
     background: #e0e0e0;
     color: #333;
+    border-color: #d100d1;
+    box-shadow: none;
 }
 body.light-theme span {
-    color: #d100d1; /* Чуть темнее розовый для светлого фона */
+    color: #d100d1;
+    text-shadow: none;
 }
+body.light-theme h1 {
+    background: linear-gradient(90deg, #d100d1, #007bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Стильный скроллбар */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+::-webkit-scrollbar-thumb {
+    background: #ff00ff;
+    border-radius: 5px;
+}
+
+/* Адаптивность под телефон */
 @media (max-width: 600px) {
     #timer {
         flex-direction: column;
