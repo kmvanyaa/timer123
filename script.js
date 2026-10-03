@@ -9,10 +9,26 @@ const quotes = [
 const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 document.getElementById('quote').textContent = randomQuote;
 
-// --- Переключатель темы ---
-document.getElementById('theme-btn').addEventListener('click', function() {
+
+// --- Переключатель темы с запоминанием (localStorage) ---
+const themeBtn = document.getElementById('theme-btn');
+
+// Проверяем, сохранял ли браузер тему раньше
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-theme');
+}
+
+themeBtn.addEventListener('click', function() {
     document.body.classList.toggle('light-theme');
+    
+    // Сохраняем выбор в память браузера
+    if (document.body.classList.contains('light-theme')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
 });
+
 
 // --- Логика таймера ---
 function updateTimer() {
@@ -31,7 +47,7 @@ function updateTimer() {
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
-    // НОВОЕ: Обновляем текущее время и дату
+    // Обновляем текущее время и дату
     document.getElementById('current-time').textContent = "Сейчас: " + now.toLocaleTimeString('ru-RU');
     document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU');
 }
