@@ -31,9 +31,25 @@ h1 {
     padding: 20px;
     border-radius: 10px;
     min-width: 100px;
+    transition: all 0.3s ease;
+}
+
+/* Каждый блок со своим цветом */
+.block:nth-child(1) {
     border: 2px solid #ff00ff;
     box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
-    transition: all 0.3s ease;
+}
+.block:nth-child(2) {
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+.block:nth-child(3) {
+    border: 2px solid #ffcc00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+.block:nth-child(4) {
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
 }
 
 .block:hover {
@@ -41,27 +57,23 @@ h1 {
     transform: translateY(-5px);
 }
 
+/* Каждой цифре свой цвет */
+.block:nth-child(1) span { color: #ff00ff; }
+.block:nth-child(2) span { color: #00ffff; }
+.block:nth-child(3) span { color: #ffcc00; }
+.block:nth-child(4) span { color: #00ff88; }
+
 span {
     font-size: 50px;
     font-weight: bold;
-    color: #ff00ff;
     font-family: 'Courier New', monospace;
     animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-    0% { 
-        transform: scale(1); 
-        text-shadow: 0 0 0px #ff00ff; 
-    }
-    50% { 
-        transform: scale(1.25); 
-        text-shadow: 0 0 25px #ff00ff, 0 0 10px #ff00ff; 
-    }
-    100% { 
-        transform: scale(1); 
-        text-shadow: 0 0 0px #ff00ff; 
-    }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
 p {
@@ -78,11 +90,8 @@ body.light-theme {
 body.light-theme .block {
     background: #e0e0e0;
     color: #333;
-    border-color: #d100d1;
-    box-shadow: none;
 }
 body.light-theme span {
-    color: #d100d1;
     text-shadow: none;
 }
 body.light-theme h1 {
