@@ -47,9 +47,16 @@ function updateTimer() {
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
-    // Обновляем текущее время и дату
-    document.getElementById('current-time').textContent = "Сейчас: " + now.toLocaleTimeString('ru-RU');
-    document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU');
+    // Обновляем текущее время
+    document.getElementById('current-time').textContent = "Сейчас: " + new Date().toLocaleTimeString('ru-RU');
+    
+    // Обновляем текущую дату с днём недели (ИДЕЯ 2)
+    document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
 }
 
 // Запускаем таймер каждую секунду
