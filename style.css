@@ -5,6 +5,13 @@ body {
     text-align: center;
     padding-top: 100px;
     transition: background 0.5s ease, color 0.5s ease;
+    animation: fadeIn 1s ease-in;
+}
+
+/* Плавное появление страницы */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Градиентный заголовок */
@@ -80,6 +87,12 @@ p {
     margin: 5px 0 0;
     font-size: 14px;
     color: #e0c8ff;
+}
+
+/* Розовое выделение текста */
+::selection {
+    background: #ff00ff;
+    color: white;
 }
 
 /* Светлая тема */
