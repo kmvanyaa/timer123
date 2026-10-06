@@ -143,3 +143,9 @@ body.light-theme h1 {
     transform: scale(1.1);
     box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
 }
+a {
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: #00ffff !important;
+}
