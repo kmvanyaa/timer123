@@ -136,3 +136,10 @@ body.light-theme h1 {
         width: 80%;
     }
 }
+#theme-btn {
+    transition: all 0.3s ease;
+}
+#theme-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+}
