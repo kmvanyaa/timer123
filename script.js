@@ -1,3 +1,10 @@
+// --- Счётчик посещений ---
+let visits = localStorage.getItem('visits') || 0;
+visits++;
+localStorage.setItem('visits', visits);
+document.getElementById('visit-counter').textContent = "Вы зашли сюда " + visits + " раз(а)";
+
+
 // --- Цитаты ---
 const quotes = [
     "Всё получится! Главное — не сдаваться.",
@@ -50,7 +57,7 @@ function updateTimer() {
     // Обновляем текущее время
     document.getElementById('current-time').textContent = "Сейчас: " + new Date().toLocaleTimeString('ru-RU');
     
-    // Обновляем текущую дату с днём недели (ИДЕЯ 2)
+    // Обновляем текущую дату с днём недели
     document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU', { 
         weekday: 'long', 
         year: 'numeric', 
