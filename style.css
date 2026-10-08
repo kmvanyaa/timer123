@@ -149,3 +149,9 @@ a {
 a:hover {
     color: #00ffff !important;
 }
+/* Анимация падения снежинок */
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}

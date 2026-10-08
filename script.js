@@ -69,3 +69,24 @@ function updateTimer() {
 // Запускаем таймер каждую секунду
 setInterval(updateTimer, 1000);
 updateTimer();
+// --- Снегопад ---
+function createSnowflake() {
+    const snowflake = document.createElement('div');
+    snowflake.innerHTML = '❄';
+    snowflake.style.position = 'fixed';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.top = '-20px';
+    snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+    snowflake.style.color = '#ffffff';
+    snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+    snowflake.style.pointerEvents = 'none';
+    snowflake.style.zIndex = '9999';
+    snowflake.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
+    document.body.appendChild(snowflake);
+    
+    // Удаляем снежинку после падения
+    setTimeout(() => snowflake.remove(), 10000);
+}
+
+// Создаём снежинки каждые 300 миллисекунд
+setInterval(createSnowflake, 300);
