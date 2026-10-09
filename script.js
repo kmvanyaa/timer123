@@ -5,7 +5,7 @@ localStorage.setItem('visits', visits);
 document.getElementById('visit-counter').textContent = "Вы зашли сюда " + visits + " раз(а)";
 
 
-// --- Цитаты ---
+// --- Цитаты с эффектом печатной машинки ---
 const quotes = [
     "Всё получится! Главное — не сдаваться.",
     "Каждый день — это новый шанс.",
@@ -14,7 +14,19 @@ const quotes = [
     "Маленькие шаги ведут к большим целям."
 ];
 const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-document.getElementById('quote').textContent = randomQuote;
+
+const quoteElement = document.getElementById('quote');
+let charIndex = 0;
+quoteElement.textContent = '';
+
+function typeQuote() {
+    if (charIndex < randomQuote.length) {
+        quoteElement.textContent += randomQuote.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeQuote, 50); // Скорость печати (50 мс)
+    }
+}
+typeQuote(); // Запускаем печать
 
 
 // --- Переключатель темы с запоминанием (localStorage) ---
@@ -69,6 +81,8 @@ function updateTimer() {
 // Запускаем таймер каждую секунду
 setInterval(updateTimer, 1000);
 updateTimer();
+
+
 // --- Снегопад ---
 function createSnowflake() {
     const snowflake = document.createElement('div');
