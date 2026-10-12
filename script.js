@@ -104,3 +104,24 @@ function createSnowflake() {
 
 // Создаём снежинки каждые 300 миллисекунд
 setInterval(createSnowflake, 300);
+// --- Мерцающие звёзды ---
+function createStar() {
+    const star = document.createElement('div');
+    star.innerHTML = '•';
+    star.style.position = 'fixed';
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.fontSize = Math.random() * 10 + 5 + 'px';
+    star.style.color = '#ffffff';
+    star.style.opacity = Math.random() * 0.5 + 0.2;
+    star.style.pointerEvents = 'none';
+    star.style.zIndex = '1';
+    star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite alternate`;
+    document.body.appendChild(star);
+    
+    // Удаляем звезду через некоторое время, чтобы не засорять страницу
+    setTimeout(() => star.remove(), 15000);
+}
+
+// Создаём звёзды каждые 500 миллисекунд
+setInterval(createStar, 500);
