@@ -125,3 +125,25 @@ function createStar() {
 
 // Создаём звёзды каждые 500 миллисекунд
 setInterval(createStar, 500);
+// --- Умный фон в зависимости от времени суток ---
+function updateBackground() {
+    const hour = new Date().getHours();
+    const body = document.body;
+    
+    // Убираем все классы времени суток
+    body.classList.remove('morning', 'day', 'evening', 'night');
+    
+    if (hour >= 5 && hour < 12) {
+        body.classList.add('morning');
+    } else if (hour >= 12 && hour < 18) {
+        body.classList.add('day');
+    } else if (hour >= 18 && hour < 23) {
+        body.classList.add('evening');
+    } else {
+        body.classList.add('night');
+    }
+}
+
+// Запускаем сразу и обновляем каждую минуту
+updateBackground();
+setInterval(updateBackground, 60000);

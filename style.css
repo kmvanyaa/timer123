@@ -199,3 +199,27 @@ a:hover {
     50% { transform: rotate(10deg); }
     100% { transform: rotate(-10deg); }
 }
+/* Умный фон */
+body.morning {
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+    color: #333;
+}
+body.day {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #fff;
+}
+body.evening {
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: #fff;
+}
+body.night {
+    background: #2d1b4e; /* твой текущий тёмный фон */
+    color: white;
+}
+
+/* Чтобы светлая тема (light-theme) оставалась приоритетной, 
+   можно добавить !important или просто не использовать умный фон вместе с ней */
+body.light-theme {
+    background: #f4f4f9 !important;
+    color: #333 !important;
+}
