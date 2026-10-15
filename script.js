@@ -147,3 +147,41 @@ function updateBackground() {
 // Запускаем сразу и обновляем каждую минуту
 updateBackground();
 setInterval(updateBackground, 60000);
+// --- Салют при клике ---
+document.addEventListener('click', function(event) {
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
+    
+    for (let i = 0; i < 15; i++) {
+        const spark = document.createElement('div');
+        spark.style.position = 'fixed';
+        spark.style.left = event.clientX + 'px';
+        spark.style.top = event.clientY + 'px';
+        spark.style.width = '6px';
+        spark.style.height = '6px';
+        spark.style.borderRadius = '50%';
+        spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+        spark.style.pointerEvents = 'none';
+        spark.style.zIndex = '99999';
+        spark.style.boxShadow = '0 0 10px currentColor';
+        
+        // Случайное направление разлёта
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 100 + 50;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        
+        spark.style.transition = 'all 0.8s ease-out';
+        spark.style.transform = 'translate(0, 0)';
+        
+        document.body.appendChild(spark);
+        
+        // Запускаем анимацию разлёта
+        requestAnimationFrame(() => {
+            spark.style.transform = `translate(${x}px, ${y}px) scale(0)`;
+            spark.style.opacity = '0';
+        });
+        
+        // Удаляем частицу после анимации
+        setTimeout(() => spark.remove(), 900);
+    }
+});
