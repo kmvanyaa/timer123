@@ -223,3 +223,13 @@ body.light-theme {
     background: #f4f4f9 !important;
     color: #333 !important;
 }
+/* Анимация смены секунд */
+@keyframes tickAnim {
+    0% { opacity: 0.3; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.tick {
+    animation: tickAnim 0.3s ease;
+}

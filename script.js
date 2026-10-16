@@ -66,6 +66,12 @@ function updateTimer() {
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
+    // НОВЫЙ БЛОК: Анимация смены секунд
+    const secondsEl = document.getElementById('seconds');
+    secondsEl.classList.remove('tick');
+    void secondsEl.offsetWidth; // трюк для перезапуска анимации
+    secondsEl.classList.add('tick');
+
     // Обновляем текущее время
     document.getElementById('current-time').textContent = "Сейчас: " + new Date().toLocaleTimeString('ru-RU');
     
@@ -104,6 +110,8 @@ function createSnowflake() {
 
 // Создаём снежинки каждые 300 миллисекунд
 setInterval(createSnowflake, 300);
+
+
 // --- Мерцающие звёзды ---
 function createStar() {
     const star = document.createElement('div');
@@ -125,6 +133,8 @@ function createStar() {
 
 // Создаём звёзды каждые 500 миллисекунд
 setInterval(createStar, 500);
+
+
 // --- Умный фон в зависимости от времени суток ---
 function updateBackground() {
     const hour = new Date().getHours();
@@ -147,6 +157,8 @@ function updateBackground() {
 // Запускаем сразу и обновляем каждую минуту
 updateBackground();
 setInterval(updateBackground, 60000);
+
+
 // --- Салют при клике ---
 document.addEventListener('click', function(event) {
     const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
