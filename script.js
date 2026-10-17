@@ -197,3 +197,22 @@ document.addEventListener('click', function(event) {
         setTimeout(() => spark.remove(), 900);
     }
 });
+// --- Кнопка "Наверх" ---
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+// Показываем кнопку, если прокрутили вниз на 300 пикселей
+window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+};
+
+// Плавная прокрутка наверх при клике
+scrollTopBtn.addEventListener("click", function() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});

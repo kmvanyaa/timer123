@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "ppa10sandbox-vbdfa",
+			"path": "../ppa10sandbox-vbdfa"
+		}
+	],
+	"settings": {}
+}
