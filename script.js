@@ -32,19 +32,24 @@ typeQuote(); // Запускаем печать
 // --- Переключатель темы с запоминанием (localStorage) ---
 const themeBtn = document.getElementById('theme-btn');
 
-// Проверяем, сохранял ли браузер тему раньше
+// Проверяем, сохранял ли браузер тему раньше, и ставим правильный текст
 if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light-theme');
+    themeBtn.textContent = 'Темная тема 🌙';
+} else {
+    themeBtn.textContent = 'Светлая тема ☀️';
 }
 
 themeBtn.addEventListener('click', function() {
     document.body.classList.toggle('light-theme');
     
-    // Сохраняем выбор в память браузера
+    // Сохраняем выбор в память браузера и меняем текст
     if (document.body.classList.contains('light-theme')) {
         localStorage.setItem('theme', 'light');
+        themeBtn.textContent = 'Темная тема 🌙';
     } else {
         localStorage.setItem('theme', 'dark');
+        themeBtn.textContent = 'Светлая тема ☀️';
     }
 });
 
@@ -197,6 +202,8 @@ document.addEventListener('click', function(event) {
         setTimeout(() => spark.remove(), 900);
     }
 });
+
+
 // --- Кнопка "Наверх" ---
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 
