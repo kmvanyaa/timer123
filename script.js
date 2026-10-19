@@ -223,3 +223,23 @@ scrollTopBtn.addEventListener("click", function() {
         behavior: "smooth"
     });
 });
+// --- Прогресс-бар года ---
+function updateYearProgress() {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+    
+    const totalYearTime = endOfYear - startOfYear;
+    const passedTime = now - startOfYear;
+    
+    // Считаем проценты
+    const percent = (passedTime / totalYearTime) * 100;
+    
+    // Обновляем ширину полоски и текст
+    document.getElementById('year-progress').style.width = percent + '%';
+    document.getElementById('year-progress-text').textContent = "Год пройден на " + percent.toFixed(1) + "%";
+}
+
+// Запускаем сразу и обновляем каждую минуту
+updateYearProgress();
+setInterval(updateYearProgress, 60000);

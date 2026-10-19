@@ -47,6 +47,12 @@
         <div class="block"><span id="seconds">0</span><p>секунд ⚡</p></div>
     </div>
 
+    <!-- НОВЫЙ БЛОК: Прогресс-бар года -->
+    <div style="width: 80%; max-width: 400px; height: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 20px auto; overflow: hidden; border: 1px solid rgba(255, 0, 255, 0.3);">
+        <div id="year-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ff00ff, #00ffff); transition: width 1s ease;"></div>
+    </div>
+    <p id="year-progress-text" style="color: #aaa; font-size: 14px; margin-top: 5px;"></p>
+
     <!-- Подпись со ссылкой на GitHub -->
     <p style="margin-top: 30px; color: #e0c8ff; font-size: 14px;">
         Сделано с ❤️ Аней, 2026 год | 
