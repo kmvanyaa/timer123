@@ -71,7 +71,10 @@ function updateTimer() {
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
-    // НОВЫЙ БЛОК: Анимация смены секунд
+    // НОВАЯ СТРОЧКА: Динамическое название вкладки
+    document.title = days + " дн. до Нового года ⏳";
+
+    // Анимация смены секунд
     const secondsEl = document.getElementById('seconds');
     secondsEl.classList.remove('tick');
     void secondsEl.offsetWidth; // трюк для перезапуска анимации
@@ -223,6 +226,8 @@ scrollTopBtn.addEventListener("click", function() {
         behavior: "smooth"
     });
 });
+
+
 // --- Прогресс-бар года ---
 function updateYearProgress() {
     const now = new Date();
