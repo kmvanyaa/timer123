@@ -248,3 +248,25 @@ function updateYearProgress() {
 // Запускаем сразу и обновляем каждую минуту
 updateYearProgress();
 setInterval(updateYearProgress, 60000);
+// --- Волшебный шлейф за курсором ---
+document.addEventListener('mousemove', function(e) {
+    // Чтобы не перегружать браузер, создаем точку с вероятностью 20%
+    if (Math.random() > 0.2) return; 
+
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    
+    // Позиция точки там, где сейчас курсор
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+    
+    // Случайный цвет из нашей палитры
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88'];
+    trail.style.background = colors[Math.floor(Math.random() * colors.length)];
+    
+    // Добавляем на страницу
+    document.body.appendChild(trail);
+    
+    // Удаляем точку через 0.8 секунды (когда она исчезнет)
+    setTimeout(() => trail.remove(), 800);
+});
