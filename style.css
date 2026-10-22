@@ -274,3 +274,12 @@ body.light-theme {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(0) translateY(30px); opacity: 0; }
 }
+/* Новогодний курсор-снежинка */
+body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">❄️</text></svg>') 12 12, auto;
+}
+
+/* Чтобы при наведении на кнопки курсор снова становился рукой */
+button, a {
+    cursor: pointer;
+}

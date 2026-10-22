@@ -270,3 +270,22 @@ document.addEventListener('mousemove', function(e) {
     // Удаляем точку через 0.8 секунды (когда она исчезнет)
     setTimeout(() => trail.remove(), 800);
 });
+// --- Пасхалка: Кликабельный заголовок ---
+const mainTitle = document.querySelector('h1');
+const funnyTitles = [
+    "До Нового года осталось:",
+    "До оливье осталось:",
+    "До мандаринов осталось:",
+    "До салютов осталось:",
+    "До подарков осталось:"
+];
+let titleIndex = 0;
+
+if (mainTitle) {
+    mainTitle.style.cursor = 'pointer'; // Чтобы было видно, что на него можно нажать
+    
+    mainTitle.addEventListener('click', function() {
+        titleIndex = (titleIndex + 1) % funnyTitles.length;
+        mainTitle.textContent = funnyTitles[titleIndex];
+    });
+}
