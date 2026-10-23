@@ -289,3 +289,22 @@ if (mainTitle) {
         mainTitle.textContent = funnyTitles[titleIndex];
     });
 }
+// --- Ускорение пульсации цифр ближе к Новому году ---
+setInterval(() => {
+    const daysLeft = parseInt(document.getElementById('days').textContent);
+    const spans = document.querySelectorAll('.block span');
+    
+    if (daysLeft <= 0) {
+        // Ура, Новый год! Самая быстрая пульсация
+        spans.forEach(span => span.style.animationDuration = '0.3s');
+    } else if (daysLeft < 10) {
+        // Меньше 10 дней — пульсирует быстро
+        spans.forEach(span => span.style.animationDuration = '0.6s');
+    } else if (daysLeft < 30) {
+        // Меньше месяца — пульсирует заметно чаще
+        spans.forEach(span => span.style.animationDuration = '0.8s');
+    } else {
+        // Обычная скорость (как было)
+        spans.forEach(span => span.style.animationDuration = '1s');
+    }
+}, 1000);
