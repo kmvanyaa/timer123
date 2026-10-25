@@ -283,3 +283,26 @@ body {
 button, a {
     cursor: pointer;
 }
+/* Всплывающее пожелание */
+.wish-bubble {
+    position: fixed;
+    background: rgba(45, 27, 78, 0.9);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    pointer-events: none;
+    z-index: 10000;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    animation: floatUpAndFade 2s ease-out forwards;
+}
+
+@keyframes floatUpAndFade {
+    0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; }
+    20% { transform: translate(-50%, -20px) scale(1); opacity: 1; }
+    80% { transform: translate(-50%, -60px) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -100px) scale(0.8); opacity: 0; }
+}

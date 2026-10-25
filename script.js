@@ -308,3 +308,36 @@ setInterval(() => {
         spans.forEach(span => span.style.animationDuration = '1s');
     }
 }, 1000);
+// --- Волшебная гирлянда (желания при клике) ---
+const wishes = [
+    "Счастья в новом году! 🎄",
+    "Пусть всё получится! ✨",
+    "Море подарков! 🎁",
+    "Удачи и вдохновения! 🚀",
+    "Любви и тепла! ❤️",
+    "Волшебства! 🪄",
+    "Успехов в учебе! 📚"
+];
+
+const garland = document.querySelector('.garland');
+
+if (garland) {
+    garland.addEventListener('click', function(event) {
+        // Создаем пузырек с пожеланием
+        const bubble = document.createElement('div');
+        bubble.className = 'wish-bubble';
+        
+        // Выбираем случайное пожелание
+        const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+        bubble.textContent = randomWish;
+        
+        // Позиционируем туда, где кликнули
+        bubble.style.left = event.clientX + 'px';
+        bubble.style.top = event.clientY + 'px';
+        
+        document.body.appendChild(bubble);
+        
+        // Удаляем через 2 секунды (когда анимация закончится)
+        setTimeout(() => bubble.remove(), 2000);
+    });
+}
