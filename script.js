@@ -341,3 +341,31 @@ if (garland) {
         setTimeout(() => bubble.remove(), 2000);
     });
 }
+// --- Падающие мандарины и подарки ---
+function createFallingItem() {
+    const item = document.createElement('div');
+    // Случайно выбираем: мандарин или подарок
+    const emojis = ['🍊', '🎁', '🍬', '🧸'];
+    item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    
+    item.style.position = 'fixed';
+    item.style.left = Math.random() * 100 + 'vw';
+    item.style.top = '-50px';
+    item.style.fontSize = Math.random() * 20 + 20 + 'px'; // Размер от 20 до 40px
+    item.style.opacity = Math.random() * 0.6 + 0.4;
+    item.style.pointerEvents = 'none';
+    item.style.zIndex = '9998';
+    
+    // Скорость падения и вращение
+    const duration = Math.random() * 4 + 4; // от 4 до 8 секунд
+    const rotate = Math.random() * 360; 
+    item.style.animation = `fallItem ${duration}s linear forwards, spinItem ${duration}s linear forwards`;
+    
+    document.body.appendChild(item);
+    
+    // Удаляем через время падения
+    setTimeout(() => item.remove(), duration * 1000);
+}
+
+// Запускаем падение каждые 800 миллисекунд (чтобы не перегружать экран)
+setInterval(createFallingItem, 800);

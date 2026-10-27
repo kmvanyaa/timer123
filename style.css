@@ -306,3 +306,14 @@ button, a {
     80% { transform: translate(-50%, -60px) scale(1); opacity: 1; }
     100% { transform: translate(-50%, -100px) scale(0.8); opacity: 0; }
 }
+/* Анимация падения и вращения для мандаринов/подарков */
+@keyframes fallItem {
+    to {
+        transform: translateY(110vh);
+    }
+}
+@keyframes spinItem {
+    to {
+        transform: rotate(360deg);
+    }
+}
