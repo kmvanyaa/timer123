@@ -369,3 +369,82 @@ function createFallingItem() {
 
 // Запускаем падение каждые 800 миллисекунд (чтобы не перегружать экран)
 setInterval(createFallingItem, 800);
+// --- Печенье с предсказанием ---
+// Создаем кнопку через JavaScript, чтобы не трогать HTML
+const fortuneBtn = document.createElement('button');
+fortuneBtn.textContent = '🥠 Предсказание';
+fortuneBtn.style.position = 'fixed';
+fortuneBtn.style.bottom = '30px';
+fortuneBtn.style.left = '30px';
+fortuneBtn.style.padding = '10px 20px';
+fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)';
+fortuneBtn.style.color = '#ffcc00';
+fortuneBtn.style.border = '2px solid #ffcc00';
+fortuneBtn.style.borderRadius = '50px';
+fortuneBtn.style.cursor = 'pointer';
+fortuneBtn.style.zIndex = '10000';
+fortuneBtn.style.boxShadow = '0 0 15px rgba(255, 204, 0, 0.4)';
+fortuneBtn.style.fontWeight = 'bold';
+fortuneBtn.style.transition = 'all 0.3s ease';
+document.body.appendChild(fortuneBtn);
+
+// Эффект при наведении
+fortuneBtn.addEventListener('mouseover', () => {
+    fortuneBtn.style.background = '#ffcc00';
+    fortuneBtn.style.color = '#2d1b4e';
+});
+fortuneBtn.addEventListener('mouseout', () => {
+    fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)';
+    fortuneBtn.style.color = '#ffcc00';
+});
+
+// Список предсказаний
+const fortunes = [
+    "Ждет удача в учебе! 🎓",
+    "Твой код скомпилируется с первого раза! 💻",
+    "Найдешь что-то очень ценное под подушкой! 💰",
+    "В новом году тебя ждет незабываемое путешествие! ✈️",
+    "Сбудутся все самые заветные мечты! ✨",
+    "Получишь много крутых подарков! 🎁",
+    "Заведешь много новых друзей! 🤝",
+    "Тебя ждет вкусный сюрприз! 🍰"
+];
+
+// Логика при клике
+fortuneBtn.addEventListener('click', function(event) {
+    // Берем случайное предсказание
+    const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+    
+    // Создаем окошко с предсказанием
+    const popup = document.createElement('div');
+    popup.textContent = randomFortune;
+    popup.style.position = 'fixed';
+    popup.style.left = '50%';
+    popup.style.top = '50%';
+    popup.style.transform = 'translate(-50%, -50%) scale(0.5)';
+    popup.style.background = '#2d1b4e';
+    popup.style.color = '#fff';
+    popup.style.padding = '20px 40px';
+    popup.style.borderRadius = '20px';
+    popup.style.border = '2px solid #ffcc00';
+    popup.style.boxShadow = '0 0 30px rgba(255, 204, 0, 0.6)';
+    popup.style.zIndex = '10001';
+    popup.style.fontSize = '20px';
+    popup.style.fontWeight = 'bold';
+    popup.style.textAlign = 'center';
+    popup.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    popup.style.pointerEvents = 'none'; // Чтобы не мешало кликать
+    
+    document.body.appendChild(popup);
+    
+    // Анимация появления
+    requestAnimationFrame(() => {
+        popup.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+    
+    // Удаляем окошко через 3 секунды
+    setTimeout(() => {
+        popup.style.transform = 'translate(-50%, -50%) scale(0)';
+        setTimeout(() => popup.remove(), 300);
+    }, 3000);
+});
