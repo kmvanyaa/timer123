@@ -448,3 +448,30 @@ fortuneBtn.addEventListener('click', function(event) {
         setTimeout(() => popup.remove(), 300);
     }, 3000);
 });
+// --- Эффект хакера (глитч) на заголовке ---
+const mainTitle = document.querySelector('h1');
+const originalText = mainTitle.innerText;
+const glitchChars = '!<>-_\\/[]{}—=+*^?#________';
+let glitchInterval = null;
+
+mainTitle.addEventListener('mouseover', () => {
+    let iteration = 0;
+    clearInterval(glitchInterval);
+    
+    glitchInterval = setInterval(() => {
+        mainTitle.innerText = originalText
+            .split('')
+            .map((letter, index) => {
+                if(index < iteration) {
+                    return originalText[index];
+                }
+                return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            })
+            .join('');
+        
+        if(iteration >= originalText.length){ 
+            clearInterval(glitchInterval);
+        }
+        iteration += 1 / 3;
+    }, 30);
+});
