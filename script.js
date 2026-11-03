@@ -475,3 +475,64 @@ mainTitle.addEventListener('mouseover', () => {
         iteration += 1 / 3;
     }, 30);
 });
+// --- Секретное слово (Пасхалка) ---
+let secretWord = "";
+
+document.addEventListener('keydown', function(e) {
+    // Добавляем нажатую клавишу к нашей строке и делаем её строчной
+    secretWord += e.key.toLowerCase();
+    
+    // Если строка стала слишком длинной, обрезаем её (оставляем последние 10 букв)
+    if (secretWord.length > 10) {
+        secretWord = secretWord.slice(-10);
+    }
+
+    // Проверяем, есть ли в набранном тексте секретные слова
+    if (secretWord.includes("снег") || secretWord.includes("аня") || secretWord.includes("newyear")) {
+        secretWord = ""; // Сбрасываем слово
+        triggerMegaFirework(); // Запускаем мега-салют
+    }
+});
+
+// Функция для мега-салюта по всему экрану
+function triggerMegaFirework() {
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333', '#ffffff'];
+    
+    // Запускаем 10 волн салюта с задержкой
+    for (let wave = 0; wave < 10; wave++) {
+        setTimeout(() => {
+            for (let i = 0; i < 30; i++) {
+                const spark = document.createElement('div');
+                spark.style.position = 'fixed';
+                // Салют появляется в случайных местах экрана
+                spark.style.left = Math.random() * 100 + 'vw';
+                spark.style.top = Math.random() * 100 + 'vh';
+                spark.style.width = '8px';
+                spark.style.height = '8px';
+                spark.style.borderRadius = '50%';
+                spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+                spark.style.pointerEvents = 'none';
+                spark.style.zIndex = '99999';
+                spark.style.boxShadow = '0 0 15px currentColor';
+                
+                // Разлёт
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 200 + 100;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                spark.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                spark.style.transform = 'translate(0, 0)';
+                
+                document.body.appendChild(spark);
+                
+                requestAnimationFrame(() => {
+                    spark.style.transform = `translate(${x}px, ${y}px) scale(0)`;
+                    spark.style.opacity = '0';
+                });
+                
+                setTimeout(() => spark.remove(), 1600);
+            }
+        }, wave * 200); // Каждая волна с задержкой в 200мс
+    }
+}
