@@ -536,3 +536,52 @@ function triggerMegaFirework() {
         }, wave * 200); // Каждая волна с задержкой в 200мс
     }
 }
+// --- Магический фонтан при клике ---
+document.addEventListener('click', function(event) {
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
+    
+    // Создаем 20 частиц для фонтана
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = event.clientX + 'px';
+        particle.style.top = event.clientY + 'px';
+        particle.style.width = '6px';
+        particle.style.height = '6px';
+        particle.style.borderRadius = '50%';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '99999';
+        particle.style.boxShadow = '0 0 10px currentColor';
+        
+        document.body.appendChild(particle);
+        
+        // Физика: случайная скорость вверх и в стороны
+        const angle = Math.random() * Math.PI - Math.PI; // От -180 до 0 градусов (вверх)
+        const velocity = Math.random() * 15 + 10; // Сила броска
+        let posX = event.clientX;
+        let posY = event.clientY;
+        let velX = Math.cos(angle) * velocity * (Math.random() > 0.5 ? 1 : -1);
+        let velY = Math.sin(angle) * velocity;
+        
+        // Анимация полета с гравитацией
+        const animateParticle = () => {
+            posX += velX;
+            posY += velY;
+            velY += 0.5; // Гравитация тянет вниз
+            
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            particle.style.opacity = Math.max(0, 1 - (posY - event.clientY) / 300); // Плавно исчезает
+            
+            // Если частица еще видна и не упала ниже экрана — продолжаем анимацию
+            if (posY < window.innerHeight && particle.style.opacity > 0) {
+                requestAnimationFrame(animateParticle);
+            } else {
+                particle.remove(); // Удаляем, когда упала
+            }
+        };
+        
+        requestAnimationFrame(animateParticle);
+    }
+});
