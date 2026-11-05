@@ -585,3 +585,41 @@ document.addEventListener('click', function(event) {
         requestAnimationFrame(animateParticle);
     }
 });
+// --- Летающий снеговик (как логотип DVD) ---
+const snowman = document.createElement('div');
+snowman.innerHTML = '☃️';
+snowman.style.position = 'fixed';
+snowman.style.fontSize = '40px';
+snowman.style.pointerEvents = 'none'; // Чтобы он не мешал кликать по сайту
+snowman.style.zIndex = '9997';
+snowman.style.transition = 'transform 0.3s ease'; // Плавное вращение
+document.body.appendChild(snowman);
+
+// Начальная позиция и скорость
+let snowX = Math.random() * (window.innerWidth - 50);
+let snowY = Math.random() * (window.innerHeight - 50);
+let velX = 2.5; // Скорость по горизонтали
+let velY = 2.5; // Скорость по вертикали
+
+function animateSnowman() {
+    snowX += velX;
+    snowY += velY;
+
+    // Проверка на столкновение с краями экрана
+    if (snowX + 40 > window.innerWidth || snowX < 0) {
+        velX = -velX;
+        snowman.style.transform = `rotate(${Math.random() * 360}deg)`; // Крутим при ударе
+    }
+    if (snowY + 40 > window.innerHeight || snowY < 0) {
+        velY = -velY;
+        snowman.style.transform = `rotate(${Math.random() * 360}deg)`; // Крутим при ударе
+    }
+
+    snowman.style.left = snowX + 'px';
+    snowman.style.top = snowY + 'px';
+
+    requestAnimationFrame(animateSnowman); // Бесконечная анимация
+}
+
+// Запускаем снеговика
+animateSnowman();
