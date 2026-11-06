@@ -623,3 +623,18 @@ function animateSnowman() {
 
 // Запускаем снеговика
 animateSnowman();
+// --- 3D-параллакс с годом на фоне ---
+const bgYear = document.createElement('div');
+bgYear.id = 'parallax-year';
+bgYear.textContent = new Date().getFullYear() + 1; // Автоматически ставит следующий год (2027)
+document.body.appendChild(bgYear);
+
+// Движение фона за мышкой
+document.addEventListener('mousemove', (e) => {
+    // Вычисляем смещение (максимум 30 пикселей в стороны)
+    const x = (e.clientX / window.innerWidth - 0.5) * 30;
+    const y = (e.clientY / window.innerHeight - 0.5) * 30;
+    
+    // Сдвигаем фон в противоположную от мышки сторону
+    bgYear.style.transform = `translate(calc(-50% + ${-x}px), calc(-50% + ${-y}px))`;
+});

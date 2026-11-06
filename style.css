@@ -317,3 +317,18 @@ button, a {
         transform: rotate(360deg);
     }
 }
+/* 3D-фон с годом */
+#parallax-year {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 35vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03); /* Едва заметный белый цвет */
+    z-index: -1; /* Отправляем на самый задний план */
+    pointer-events: none;
+    white-space: nowrap;
+    transition: transform 0.1s ease-out;
+    font-family: 'Courier New', monospace;
+}
