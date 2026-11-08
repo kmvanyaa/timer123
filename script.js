@@ -638,3 +638,29 @@ document.addEventListener('mousemove', (e) => {
     // Сдвигаем фон в противоположную от мышки сторону
     bgYear.style.transform = `translate(calc(-50% + ${-x}px), calc(-50% + ${-y}px))`;
 });
+// --- Голосовой таймер (Text-to-Speech) ---
+const speechBtn = document.createElement('button');
+speechBtn.id = 'speech-btn';
+speechBtn.innerHTML = '🗣️';
+speechBtn.title = 'Озвучить время';
+document.body.appendChild(speechBtn);
+
+speechBtn.addEventListener('click', function() {
+    // Берем текущие значения из блоков
+    const days = document.getElementById('days').textContent;
+    const hours = document.getElementById('hours').textContent;
+    const minutes = document.getElementById('minutes').textContent;
+    const seconds = document.getElementById('seconds').textContent;
+    
+    // Формируем текст
+    const text = `Внимание! До Нового года осталось ${days} дней, ${hours} часов, ${minutes} минут и ${seconds} секунд.`;
+    
+    // Создаем объект речи
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ru-RU'; // Устанавливаем русский язык
+    utterance.rate = 0.9; // Скорость речи (чуть медленнее для пафоса)
+    
+    // Отменяем предыдущую речь, если она еще идет, и говорим новую
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+});
