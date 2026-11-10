@@ -664,3 +664,24 @@ speechBtn.addEventListener('click', function() {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
 });
+// --- Падающие звезды (Кометы) ---
+function createShootingStar() {
+    const star = document.createElement('div');
+    star.classList.add('shooting-star');
+    
+    // Случайная позиция появления (сверху или справа)
+    star.style.top = Math.random() * 50 + 'vh';
+    star.style.left = Math.random() * 100 + 'vw';
+    
+    // Случайная скорость полета (от 0.5 до 1.5 секунды)
+    const duration = Math.random() * 1 + 0.5;
+    star.style.animation = `shoot ${duration}s linear forwards`;
+    
+    document.body.appendChild(star);
+    
+    // Удаляем звезду после того, как она улетит
+    setTimeout(() => star.remove(), duration * 1000);
+}
+
+// Запускаем падающую звезду каждые 4 секунды (чтобы это было редкое и красивое явление)
+setInterval(createShootingStar, 4000);

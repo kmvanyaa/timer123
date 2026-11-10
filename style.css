@@ -357,3 +357,28 @@ button, a {
     transform: scale(1.1);
     box-shadow: 0 0 25px rgba(0, 255, 136, 0.8);
 }
+/* Падающая звезда (комета) */
+.shooting-star {
+    position: fixed;
+    width: 150px;
+    height: 2px;
+    /* Градиент создает эффект хвоста: от яркого к прозрачному */
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), #ffffff, #00ffff);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0;
+    transform: rotate(-45deg); /* Наклон под углом */
+}
+
+/* Анимация полета */
+@keyframes shoot {
+    0% { 
+        transform: translate(0, 0) rotate(-45deg); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(-800px, 800px) rotate(-45deg); 
+        opacity: 0; 
+    }
+}
