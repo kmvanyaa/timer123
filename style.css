@@ -382,3 +382,51 @@ button, a {
         opacity: 0; 
     }
 }
+/* Интерактивная коробка с подарком */
+.gift-box {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    font-size: 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: transform 0.2s;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.6));
+}
+
+/* Анимация тряски */
+.gift-box.shake {
+    animation: shakeAnim 0.5s;
+}
+
+@keyframes shakeAnim {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-15deg) scale(1.1); }
+    50% { transform: rotate(15deg) scale(1.1); }
+    75% { transform: rotate(-15deg) scale(1.1); }
+}
+
+/* Окошко с комплиментом */
+.compliment-popup {
+    position: fixed;
+    bottom: 160px;
+    left: 30px;
+    background: #2d1b4e;
+    color: #00ff88;
+    padding: 15px 25px;
+    border-radius: 15px;
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10000;
+    pointer-events: none;
+    animation: popUpFade 3s ease forwards;
+}
+
+@keyframes popUpFade {
+    0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+    10% { opacity: 1; transform: translateY(0) scale(1); }
+    80% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+}

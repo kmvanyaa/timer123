@@ -685,3 +685,35 @@ function createShootingStar() {
 
 // Запускаем падающую звезду каждые 4 секунды (чтобы это было редкое и красивое явление)
 setInterval(createShootingStar, 4000);
+// --- Интерактивная коробка с подарком ---
+const giftBox = document.createElement('div');
+giftBox.className = 'gift-box';
+giftBox.innerHTML = '🎁';
+document.body.appendChild(giftBox);
+
+const compliments = [
+    "Ты классный программист! 💻",
+    "Твой сайт просто огонь! 🔥",
+    "Ты умница и красавица! ✨",
+    "Продолжай в том же духе! 🚀",
+    "Скоро Новый год, а ты уже молодец! 🎄"
+];
+
+giftBox.addEventListener('click', () => {
+    // Запускаем анимацию тряски
+    giftBox.classList.add('shake');
+    giftBox.innerHTML = '🎉'; // Меняем подарок на салют
+    
+    // Создаем окошко с комплиментом
+    const popup = document.createElement('div');
+    popup.className = 'compliment-popup';
+    popup.textContent = compliments[Math.floor(Math.random() * compliments.length)];
+    document.body.appendChild(popup);
+    
+    // Возвращаем подарок обратно и убираем окошко через 3 секунды
+    setTimeout(() => {
+        giftBox.classList.remove('shake');
+        giftBox.innerHTML = '🎁';
+        popup.remove();
+    }, 3000);
+});
