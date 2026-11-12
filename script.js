@@ -717,3 +717,71 @@ giftBox.addEventListener('click', () => {
         popup.remove();
     }, 3000);
 });
+// --- 3D-эффект наклона блоков при наведении ---
+const blocks = document.querySelectorAll('.block');
+
+blocks.forEach(block => {
+    // Когда мышка двигается над блоком
+    block.addEventListener('mousemove', (e) => {
+        const rect = block.getBoundingClientRect();
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top;  
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Вычисляем угол наклона (максимум 15 градусов)
+        const rotateX = ((y - centerY) / centerY) * -15; 
+        const rotateY = ((x - centerX) / centerX) * 15;  
+        
+        block.style.transform = `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    });
+    
+    // Когда мышка уходит с блока, возвращаем в исходное положение
+    block.addEventListener('mouseleave', () => {
+        block.style.transform = ''; 
+    });
+});
+// --- Список новогодних желаний ---
+const wishInput = document.getElementById('wish-input');
+const addWishBtn = document.getElementById('add-wish-btn');
+const wishList = document.getElementById('wish-list');
+
+// Загружаем сохраненные желания
+let wishes = JSON.parse(localStorage.getItem('ny_wishes')) || [];
+
+function renderWishes() {
+    wishList.innerHTML = '';
+    wishes.forEach((wish, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span>${wish}</span>
+            <button onclick="deleteWish(${index})">✖</button>
+        `;
+        wishList.appendChild(li);
+    });
+}
+
+function addWish() {
+    const text = wishInput.value.trim();
+    if (text) {
+        wishes.push(text);
+        localStorage.setItem('ny_wishes', JSON.stringify(wishes));
+        wishInput.value = '';
+        renderWishes();
+    }
+}
+
+function deleteWish(index) {
+    wishes.splice(index, 1);
+    localStorage.setItem('ny_wishes', JSON.stringify(wishes));
+    renderWishes();
+}
+
+addWishBtn.addEventListener('click', addWish);
+wishInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') addWish();
+});
+
+// Показываем список при загрузке
+renderWishes();
