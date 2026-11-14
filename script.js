@@ -785,3 +785,19 @@ wishInput.addEventListener('keypress', (e) => {
 
 // Показываем список при загрузке
 renderWishes();
+// --- Летающий Дед Мороз ---
+function launchSanta() {
+    const santa = document.createElement('div');
+    santa.className = 'santa-sleigh';
+    santa.innerHTML = '🎅🏼🛷✨'; // Дед Мороз, сани и искры
+    document.body.appendChild(santa);
+    
+    // Удаляем элемент через 12 секунд (когда анимация закончится)
+    setTimeout(() => santa.remove(), 12000);
+}
+
+// Запускаем Деда Мороза через 3 секунды после загрузки страницы
+setTimeout(launchSanta, 3000);
+
+// И потом запускаем каждые 45 секунд, чтобы это было приятным сюрпризом, а не мельтешением
+setInterval(launchSanta, 45000);
