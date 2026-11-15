@@ -801,3 +801,31 @@ setTimeout(launchSanta, 3000);
 
 // И потом запускаем каждые 45 секунд, чтобы это было приятным сюрпризом, а не мельтешением
 setInterval(launchSanta, 45000);
+// --- Небесные фонарики ---
+function createLantern() {
+    const lantern = document.createElement('div');
+    lantern.className = 'sky-lantern';
+    
+    // Используем эмодзи фонарика или свечи
+    lantern.innerHTML = '🏮'; 
+    
+    // Случайная позиция по горизонтали
+    lantern.style.left = Math.random() * 100 + 'vw';
+    
+    // Случайный размер (от 20 до 50 пикселей)
+    lantern.style.fontSize = Math.random() * 30 + 20 + 'px';
+    
+    // Случайная скорость подъема (от 8 до 15 секунд)
+    const duration = Math.random() * 7 + 8;
+    
+    // Применяем анимацию
+    lantern.style.animation = `floatUp ${duration}s linear forwards`;
+    
+    document.body.appendChild(lantern);
+    
+    // Удаляем фонарик через время, когда он улетит
+    setTimeout(() => lantern.remove(), duration * 1000);
+}
+
+// Запускаем по одному фонарику каждые 5 секунд
+setInterval(createLantern, 5000);

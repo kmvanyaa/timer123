@@ -482,3 +482,31 @@ button, a {
         transform: translateY(0) rotate(0deg); 
     }
 }
+/* Небесные фонарики */
+.sky-lantern {
+    position: fixed;
+    bottom: -50px;
+    z-index: 9996;
+    pointer-events: none; /* Чтобы не мешали кликать */
+    opacity: 0;
+    /* Теплое свечение вокруг фонарика */
+    filter: drop-shadow(0 0 15px #ffaa00) drop-shadow(0 0 5px #ff5500); 
+}
+
+/* Анимация подъема с покачиванием */
+@keyframes floatUp {
+    0% { 
+        transform: translateY(0) translateX(0) rotate(0deg); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 0.8; 
+    }
+    50% { 
+        transform: translateY(-50vh) translateX(30px) rotate(10deg); 
+    }
+    100% { 
+        transform: translateY(-110vh) translateX(-30px) rotate(-10deg); 
+        opacity: 0; 
+    }
+}
