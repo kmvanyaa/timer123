@@ -2,8 +2,8 @@
 let visits = localStorage.getItem('visits') || 0;
 visits++;
 localStorage.setItem('visits', visits);
-document.getElementById('visit-counter').textContent = "Вы зашли сюда " + visits + " раз(а)";
-
+const visitCounter = document.getElementById('visit-counter');
+if (visitCounter) visitCounter.textContent = "Вы зашли сюда " + visits + " раз(а)";
 
 // --- Цитаты с эффектом печатной машинки ---
 const quotes = [
@@ -14,47 +14,42 @@ const quotes = [
     "Маленькие шаги ведут к большим целям."
 ];
 const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-
 const quoteElement = document.getElementById('quote');
 let charIndex = 0;
-quoteElement.textContent = '';
-
-function typeQuote() {
-    if (charIndex < randomQuote.length) {
-        quoteElement.textContent += randomQuote.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeQuote, 50); // Скорость печати (50 мс)
+if (quoteElement) {
+    quoteElement.textContent = '';
+    function typeQuote() {
+        if (charIndex < randomQuote.length) {
+            quoteElement.textContent += randomQuote.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeQuote, 50);
+        }
     }
+    typeQuote();
 }
-typeQuote(); // Запускаем печать
 
-
-// --- Переключатель темы с запоминанием (localStorage) ---
+// --- Переключатель темы ---
 const themeBtn = document.getElementById('theme-btn');
-
-// Проверяем, сохранял ли браузер тему раньше, и ставим правильный текст
-if (localStorage.getItem('theme') === 'light') {
-    document.body.classList.add('light-theme');
-    themeBtn.textContent = 'Темная тема 🌙';
-} else {
-    themeBtn.textContent = 'Светлая тема ☀️';
-}
-
-themeBtn.addEventListener('click', function() {
-    document.body.classList.toggle('light-theme');
-    
-    // Сохраняем выбор в память браузера и меняем текст
-    if (document.body.classList.contains('light-theme')) {
-        localStorage.setItem('theme', 'light');
+if (themeBtn) {
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-theme');
         themeBtn.textContent = 'Темная тема 🌙';
     } else {
-        localStorage.setItem('theme', 'dark');
         themeBtn.textContent = 'Светлая тема ☀️';
     }
-});
+    themeBtn.addEventListener('click', function() {
+        document.body.classList.toggle('light-theme');
+        if (document.body.classList.contains('light-theme')) {
+            localStorage.setItem('theme', 'light');
+            themeBtn.textContent = 'Темная тема 🌙';
+        } else {
+            localStorage.setItem('theme', 'dark');
+            themeBtn.textContent = 'Светлая тема ☀️';
+        }
+    });
+}
 
-
-// --- Логика таймера ---
+// --- ГЛАВНЫЙ ТАЙМЕР ---
 function updateTimer() {
     const now = new Date();
     const newYear = new Date(now.getFullYear() + 1, 0, 1);
@@ -65,39 +60,33 @@ function updateTimer() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    // Обновляем цифры таймера (с добавлением нулей)
-    document.getElementById('days').textContent = String(days).padStart(2, '0');
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    const dEl = document.getElementById('days');
+    const hEl = document.getElementById('hours');
+    const mEl = document.getElementById('minutes');
+    const sEl = document.getElementById('seconds');
 
-    // НОВАЯ СТРОЧКА: Динамическое название вкладки
+    if (dEl) dEl.textContent = String(days).padStart(2, '0');
+    if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+    if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
+    if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
+
     document.title = days + " дн. до Нового года ⏳";
 
-    // Анимация смены секунд
-    const secondsEl = document.getElementById('seconds');
-    secondsEl.classList.remove('tick');
-    void secondsEl.offsetWidth; // трюк для перезапуска анимации
-    secondsEl.classList.add('tick');
+    if (sEl) {
+        sEl.classList.remove('tick');
+        void sEl.offsetWidth;
+        sEl.classList.add('tick');
+    }
 
-    // Обновляем текущее время
-    document.getElementById('current-time').textContent = "Сейчас: " + new Date().toLocaleTimeString('ru-RU');
-    
-    // Обновляем текущую дату с днём недели
-    document.getElementById('current-date').textContent = "Сегодня: " + now.toLocaleDateString('ru-RU', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
+    const cTime = document.getElementById('current-time');
+    const cDate = document.getElementById('current-date');
+    if (cTime) cTime.textContent = "Сейчас: " + new Date().toLocaleTimeString('ru-RU');
+    if (cDate) cDate.textContent = "Сегодня: " + now.toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
-
-// Запускаем таймер каждую секунду
 setInterval(updateTimer, 1000);
-updateTimer();
+updateTimer(); // Запускаем сразу!
 
-
-// --- Снегопад ---
+// --- Всякие фоны и падающие штуки ---
 function createSnowflake() {
     const snowflake = document.createElement('div');
     snowflake.innerHTML = '❄';
@@ -111,16 +100,10 @@ function createSnowflake() {
     snowflake.style.zIndex = '9999';
     snowflake.style.animation = `fall ${Math.random() * 5 + 5}s linear forwards`;
     document.body.appendChild(snowflake);
-    
-    // Удаляем снежинку после падения
     setTimeout(() => snowflake.remove(), 10000);
 }
-
-// Создаём снежинки каждые 300 миллисекунд
 setInterval(createSnowflake, 300);
 
-
-// --- Мерцающие звёзды ---
 function createStar() {
     const star = document.createElement('div');
     star.innerHTML = '•';
@@ -134,43 +117,55 @@ function createStar() {
     star.style.zIndex = '1';
     star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite alternate`;
     document.body.appendChild(star);
-    
-    // Удаляем звезду через некоторое время, чтобы не засорять страницу
     setTimeout(() => star.remove(), 15000);
 }
-
-// Создаём звёзды каждые 500 миллисекунд
 setInterval(createStar, 500);
 
+function createFallingItem() {
+    const item = document.createElement('div');
+    const emojis = ['🍊', '🎁', '🍬', '🧸'];
+    item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    item.style.position = 'fixed';
+    item.style.left = Math.random() * 100 + 'vw';
+    item.style.top = '-50px';
+    item.style.fontSize = Math.random() * 20 + 20 + 'px';
+    item.style.opacity = Math.random() * 0.6 + 0.4;
+    item.style.pointerEvents = 'none';
+    item.style.zIndex = '9998';
+    const duration = Math.random() * 4 + 4;
+    item.style.animation = `fallItem ${duration}s linear forwards, spinItem ${duration}s linear forwards`;
+    document.body.appendChild(item);
+    setTimeout(() => item.remove(), duration * 1000);
+}
+setInterval(createFallingItem, 800);
 
-// --- Умный фон в зависимости от времени суток ---
+function createShootingStar() {
+    const star = document.createElement('div');
+    star.classList.add('shooting-star');
+    star.style.top = Math.random() * 50 + 'vh';
+    star.style.left = Math.random() * 100 + 'vw';
+    const duration = Math.random() * 1 + 0.5;
+    star.style.animation = `shoot ${duration}s linear forwards`;
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), duration * 1000);
+}
+setInterval(createShootingStar, 4000);
+
+// --- Умный фон ---
 function updateBackground() {
     const hour = new Date().getHours();
-    const body = document.body;
-    
-    // Убираем все классы времени суток
-    body.classList.remove('morning', 'day', 'evening', 'night');
-    
-    if (hour >= 5 && hour < 12) {
-        body.classList.add('morning');
-    } else if (hour >= 12 && hour < 18) {
-        body.classList.add('day');
-    } else if (hour >= 18 && hour < 23) {
-        body.classList.add('evening');
-    } else {
-        body.classList.add('night');
-    }
+    document.body.classList.remove('morning', 'day', 'evening', 'night');
+    if (hour >= 5 && hour < 12) document.body.classList.add('morning');
+    else if (hour >= 12 && hour < 18) document.body.classList.add('day');
+    else if (hour >= 18 && hour < 23) document.body.classList.add('evening');
+    else document.body.classList.add('night');
 }
-
-// Запускаем сразу и обновляем каждую минуту
 updateBackground();
 setInterval(updateBackground, 60000);
-
 
 // --- Салют при клике ---
 document.addEventListener('click', function(event) {
     const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
-    
     for (let i = 0; i < 15; i++) {
         const spark = document.createElement('div');
         spark.style.position = 'fixed';
@@ -183,649 +178,316 @@ document.addEventListener('click', function(event) {
         spark.style.pointerEvents = 'none';
         spark.style.zIndex = '99999';
         spark.style.boxShadow = '0 0 10px currentColor';
-        
-        // Случайное направление разлёта
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.random() * 100 + 50;
         const x = Math.cos(angle) * distance;
         const y = Math.sin(angle) * distance;
-        
         spark.style.transition = 'all 0.8s ease-out';
         spark.style.transform = 'translate(0, 0)';
-        
         document.body.appendChild(spark);
-        
-        // Запускаем анимацию разлёта
         requestAnimationFrame(() => {
             spark.style.transform = `translate(${x}px, ${y}px) scale(0)`;
             spark.style.opacity = '0';
         });
-        
-        // Удаляем частицу после анимации
         setTimeout(() => spark.remove(), 900);
     }
 });
 
-
 // --- Кнопка "Наверх" ---
 const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-// Показываем кнопку, если прокрутили вниз на 300 пикселей
-window.onscroll = function() {
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        scrollTopBtn.style.display = "block";
-    } else {
-        scrollTopBtn.style.display = "none";
-    }
-};
-
-// Плавная прокрутка наверх при клике
-scrollTopBtn.addEventListener("click", function() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+if (scrollTopBtn) {
+    window.onscroll = function() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    };
+    scrollTopBtn.addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
-});
-
+}
 
 // --- Прогресс-бар года ---
 function updateYearProgress() {
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
-    
     const totalYearTime = endOfYear - startOfYear;
     const passedTime = now - startOfYear;
-    
-    // Считаем проценты
     const percent = (passedTime / totalYearTime) * 100;
-    
-    // Обновляем ширину полоски и текст
-    document.getElementById('year-progress').style.width = percent + '%';
-    document.getElementById('year-progress-text').textContent = "Год пройден на " + percent.toFixed(1) + "%";
+    const progressBar = document.getElementById('year-progress');
+    const progressText = document.getElementById('year-progress-text');
+    if (progressBar) progressBar.style.width = percent + '%';
+    if (progressText) progressText.textContent = "Год пройден на " + percent.toFixed(1) + "%";
 }
-
-// Запускаем сразу и обновляем каждую минуту
 updateYearProgress();
 setInterval(updateYearProgress, 60000);
-// --- Волшебный шлейф за курсором ---
-document.addEventListener('mousemove', function(e) {
-    // Чтобы не перегружать браузер, создаем точку с вероятностью 20%
-    if (Math.random() > 0.2) return; 
 
-    const trail = document.createElement('div');
-    trail.className = 'cursor-trail';
-    
-    // Позиция точки там, где сейчас курсор
-    trail.style.left = e.clientX + 'px';
-    trail.style.top = e.clientY + 'px';
-    
-    // Случайный цвет из нашей палитры
-    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88'];
-    trail.style.background = colors[Math.floor(Math.random() * colors.length)];
-    
-    // Добавляем на страницу
-    document.body.appendChild(trail);
-    
-    // Удаляем точку через 0.8 секунды (когда она исчезнет)
-    setTimeout(() => trail.remove(), 800);
-});
-// --- Пасхалка: Кликабельный заголовок ---
-const mainTitle = document.querySelector('h1');
-const funnyTitles = [
-    "До Нового года осталось:",
-    "До оливье осталось:",
-    "До мандаринов осталось:",
-    "До салютов осталось:",
-    "До подарков осталось:"
-];
-let titleIndex = 0;
-
-if (mainTitle) {
-    mainTitle.style.cursor = 'pointer'; // Чтобы было видно, что на него можно нажать
-    
-    mainTitle.addEventListener('click', function() {
-        titleIndex = (titleIndex + 1) % funnyTitles.length;
-        mainTitle.textContent = funnyTitles[titleIndex];
-    });
-}
-// --- Ускорение пульсации цифр ближе к Новому году ---
-setInterval(() => {
-    const daysLeft = parseInt(document.getElementById('days').textContent);
-    const spans = document.querySelectorAll('.block span');
-    
-    if (daysLeft <= 0) {
-        // Ура, Новый год! Самая быстрая пульсация
-        spans.forEach(span => span.style.animationDuration = '0.3s');
-    } else if (daysLeft < 10) {
-        // Меньше 10 дней — пульсирует быстро
-        spans.forEach(span => span.style.animationDuration = '0.6s');
-    } else if (daysLeft < 30) {
-        // Меньше месяца — пульсирует заметно чаще
-        spans.forEach(span => span.style.animationDuration = '0.8s');
-    } else {
-        // Обычная скорость (как было)
-        spans.forEach(span => span.style.animationDuration = '1s');
-    }
-}, 1000);
-// --- Волшебная гирлянда (желания при клике) ---
-const wishes = [
-    "Счастья в новом году! 🎄",
-    "Пусть всё получится! ✨",
-    "Море подарков! 🎁",
-    "Удачи и вдохновения! 🚀",
-    "Любви и тепла! ❤️",
-    "Волшебства! 🪄",
-    "Успехов в учебе! 📚"
-];
-
-const garland = document.querySelector('.garland');
-
-if (garland) {
-    garland.addEventListener('click', function(event) {
-        // Создаем пузырек с пожеланием
-        const bubble = document.createElement('div');
-        bubble.className = 'wish-bubble';
-        
-        // Выбираем случайное пожелание
-        const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-        bubble.textContent = randomWish;
-        
-        // Позиционируем туда, где кликнули
-        bubble.style.left = event.clientX + 'px';
-        bubble.style.top = event.clientY + 'px';
-        
-        document.body.appendChild(bubble);
-        
-        // Удаляем через 2 секунды (когда анимация закончится)
-        setTimeout(() => bubble.remove(), 2000);
-    });
-}
-// --- Падающие мандарины и подарки ---
-function createFallingItem() {
-    const item = document.createElement('div');
-    // Случайно выбираем: мандарин или подарок
-    const emojis = ['🍊', '🎁', '🍬', '🧸'];
-    item.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    
-    item.style.position = 'fixed';
-    item.style.left = Math.random() * 100 + 'vw';
-    item.style.top = '-50px';
-    item.style.fontSize = Math.random() * 20 + 20 + 'px'; // Размер от 20 до 40px
-    item.style.opacity = Math.random() * 0.6 + 0.4;
-    item.style.pointerEvents = 'none';
-    item.style.zIndex = '9998';
-    
-    // Скорость падения и вращение
-    const duration = Math.random() * 4 + 4; // от 4 до 8 секунд
-    const rotate = Math.random() * 360; 
-    item.style.animation = `fallItem ${duration}s linear forwards, spinItem ${duration}s linear forwards`;
-    
-    document.body.appendChild(item);
-    
-    // Удаляем через время падения
-    setTimeout(() => item.remove(), duration * 1000);
-}
-
-// Запускаем падение каждые 800 миллисекунд (чтобы не перегружать экран)
-setInterval(createFallingItem, 800);
-// --- Печенье с предсказанием ---
-// Создаем кнопку через JavaScript, чтобы не трогать HTML
-const fortuneBtn = document.createElement('button');
-fortuneBtn.textContent = '🥠 Предсказание';
-fortuneBtn.style.position = 'fixed';
-fortuneBtn.style.bottom = '30px';
-fortuneBtn.style.left = '30px';
-fortuneBtn.style.padding = '10px 20px';
-fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)';
-fortuneBtn.style.color = '#ffcc00';
-fortuneBtn.style.border = '2px solid #ffcc00';
-fortuneBtn.style.borderRadius = '50px';
-fortuneBtn.style.cursor = 'pointer';
-fortuneBtn.style.zIndex = '10000';
-fortuneBtn.style.boxShadow = '0 0 15px rgba(255, 204, 0, 0.4)';
-fortuneBtn.style.fontWeight = 'bold';
-fortuneBtn.style.transition = 'all 0.3s ease';
-document.body.appendChild(fortuneBtn);
-
-// Эффект при наведении
-fortuneBtn.addEventListener('mouseover', () => {
-    fortuneBtn.style.background = '#ffcc00';
-    fortuneBtn.style.color = '#2d1b4e';
-});
-fortuneBtn.addEventListener('mouseout', () => {
-    fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)';
-    fortuneBtn.style.color = '#ffcc00';
-});
-
-// Список предсказаний
-const fortunes = [
-    "Ждет удача в учебе! 🎓",
-    "Твой код скомпилируется с первого раза! 💻",
-    "Найдешь что-то очень ценное под подушкой! 💰",
-    "В новом году тебя ждет незабываемое путешествие! ✈️",
-    "Сбудутся все самые заветные мечты! ✨",
-    "Получишь много крутых подарков! 🎁",
-    "Заведешь много новых друзей! 🤝",
-    "Тебя ждет вкусный сюрприз! 🍰"
-];
-
-// Логика при клике
-fortuneBtn.addEventListener('click', function(event) {
-    // Берем случайное предсказание
-    const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-    
-    // Создаем окошко с предсказанием
-    const popup = document.createElement('div');
-    popup.textContent = randomFortune;
-    popup.style.position = 'fixed';
-    popup.style.left = '50%';
-    popup.style.top = '50%';
-    popup.style.transform = 'translate(-50%, -50%) scale(0.5)';
-    popup.style.background = '#2d1b4e';
-    popup.style.color = '#fff';
-    popup.style.padding = '20px 40px';
-    popup.style.borderRadius = '20px';
-    popup.style.border = '2px solid #ffcc00';
-    popup.style.boxShadow = '0 0 30px rgba(255, 204, 0, 0.6)';
-    popup.style.zIndex = '10001';
-    popup.style.fontSize = '20px';
-    popup.style.fontWeight = 'bold';
-    popup.style.textAlign = 'center';
-    popup.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    popup.style.pointerEvents = 'none'; // Чтобы не мешало кликать
-    
-    document.body.appendChild(popup);
-    
-    // Анимация появления
-    requestAnimationFrame(() => {
-        popup.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-    
-    // Удаляем окошко через 3 секунды
-    setTimeout(() => {
-        popup.style.transform = 'translate(-50%, -50%) scale(0)';
-        setTimeout(() => popup.remove(), 300);
-    }, 3000);
-});
-// --- Эффект хакера (глитч) на заголовке ---
-const mainTitle = document.querySelector('h1');
-const originalText = mainTitle.innerText;
-const glitchChars = '!<>-_\\/[]{}—=+*^?#________';
-let glitchInterval = null;
-
-mainTitle.addEventListener('mouseover', () => {
-    let iteration = 0;
-    clearInterval(glitchInterval);
-    
-    glitchInterval = setInterval(() => {
-        mainTitle.innerText = originalText
-            .split('')
-            .map((letter, index) => {
-                if(index < iteration) {
-                    return originalText[index];
-                }
-                return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-            })
-            .join('');
-        
-        if(iteration >= originalText.length){ 
-            clearInterval(glitchInterval);
-        }
-        iteration += 1 / 3;
-    }, 30);
-});
-// --- Секретное слово (Пасхалка) ---
-let secretWord = "";
-
-document.addEventListener('keydown', function(e) {
-    // Добавляем нажатую клавишу к нашей строке и делаем её строчной
-    secretWord += e.key.toLowerCase();
-    
-    // Если строка стала слишком длинной, обрезаем её (оставляем последние 10 букв)
-    if (secretWord.length > 10) {
-        secretWord = secretWord.slice(-10);
-    }
-
-    // Проверяем, есть ли в набранном тексте секретные слова
-    if (secretWord.includes("снег") || secretWord.includes("аня") || secretWord.includes("newyear")) {
-        secretWord = ""; // Сбрасываем слово
-        triggerMegaFirework(); // Запускаем мега-салют
-    }
-});
-
-// Функция для мега-салюта по всему экрану
-function triggerMegaFirework() {
-    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333', '#ffffff'];
-    
-    // Запускаем 10 волн салюта с задержкой
-    for (let wave = 0; wave < 10; wave++) {
-        setTimeout(() => {
-            for (let i = 0; i < 30; i++) {
-                const spark = document.createElement('div');
-                spark.style.position = 'fixed';
-                // Салют появляется в случайных местах экрана
-                spark.style.left = Math.random() * 100 + 'vw';
-                spark.style.top = Math.random() * 100 + 'vh';
-                spark.style.width = '8px';
-                spark.style.height = '8px';
-                spark.style.borderRadius = '50%';
-                spark.style.background = colors[Math.floor(Math.random() * colors.length)];
-                spark.style.pointerEvents = 'none';
-                spark.style.zIndex = '99999';
-                spark.style.boxShadow = '0 0 15px currentColor';
-                
-                // Разлёт
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 200 + 100;
-                const x = Math.cos(angle) * distance;
-                const y = Math.sin(angle) * distance;
-                
-                spark.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                spark.style.transform = 'translate(0, 0)';
-                
-                document.body.appendChild(spark);
-                
-                requestAnimationFrame(() => {
-                    spark.style.transform = `translate(${x}px, ${y}px) scale(0)`;
-                    spark.style.opacity = '0';
-                });
-                
-                setTimeout(() => spark.remove(), 1600);
-            }
-        }, wave * 200); // Каждая волна с задержкой в 200мс
-    }
-}
-// --- Магический фонтан при клике ---
-document.addEventListener('click', function(event) {
-    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
-    
-    // Создаем 20 частиц для фонтана
-    for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('div');
-        particle.style.position = 'fixed';
-        particle.style.left = event.clientX + 'px';
-        particle.style.top = event.clientY + 'px';
-        particle.style.width = '6px';
-        particle.style.height = '6px';
-        particle.style.borderRadius = '50%';
-        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.pointerEvents = 'none';
-        particle.style.zIndex = '99999';
-        particle.style.boxShadow = '0 0 10px currentColor';
-        
-        document.body.appendChild(particle);
-        
-        // Физика: случайная скорость вверх и в стороны
-        const angle = Math.random() * Math.PI - Math.PI; // От -180 до 0 градусов (вверх)
-        const velocity = Math.random() * 15 + 10; // Сила броска
-        let posX = event.clientX;
-        let posY = event.clientY;
-        let velX = Math.cos(angle) * velocity * (Math.random() > 0.5 ? 1 : -1);
-        let velY = Math.sin(angle) * velocity;
-        
-        // Анимация полета с гравитацией
-        const animateParticle = () => {
-            posX += velX;
-            posY += velY;
-            velY += 0.5; // Гравитация тянет вниз
-            
-            particle.style.left = posX + 'px';
-            particle.style.top = posY + 'px';
-            particle.style.opacity = Math.max(0, 1 - (posY - event.clientY) / 300); // Плавно исчезает
-            
-            // Если частица еще видна и не упала ниже экрана — продолжаем анимацию
-            if (posY < window.innerHeight && particle.style.opacity > 0) {
-                requestAnimationFrame(animateParticle);
-            } else {
-                particle.remove(); // Удаляем, когда упала
-            }
-        };
-        
-        requestAnimationFrame(animateParticle);
-    }
-});
-// --- Летающий снеговик (как логотип DVD) ---
-const snowman = document.createElement('div');
-snowman.innerHTML = '☃️';
-snowman.style.position = 'fixed';
-snowman.style.fontSize = '40px';
-snowman.style.pointerEvents = 'none'; // Чтобы он не мешал кликать по сайту
-snowman.style.zIndex = '9997';
-snowman.style.transition = 'transform 0.3s ease'; // Плавное вращение
-document.body.appendChild(snowman);
-
-// Начальная позиция и скорость
-let snowX = Math.random() * (window.innerWidth - 50);
-let snowY = Math.random() * (window.innerHeight - 50);
-let velX = 2.5; // Скорость по горизонтали
-let velY = 2.5; // Скорость по вертикали
-
-function animateSnowman() {
-    snowX += velX;
-    snowY += velY;
-
-    // Проверка на столкновение с краями экрана
-    if (snowX + 40 > window.innerWidth || snowX < 0) {
-        velX = -velX;
-        snowman.style.transform = `rotate(${Math.random() * 360}deg)`; // Крутим при ударе
-    }
-    if (snowY + 40 > window.innerHeight || snowY < 0) {
-        velY = -velY;
-        snowman.style.transform = `rotate(${Math.random() * 360}deg)`; // Крутим при ударе
-    }
-
-    snowman.style.left = snowX + 'px';
-    snowman.style.top = snowY + 'px';
-
-    requestAnimationFrame(animateSnowman); // Бесконечная анимация
-}
-
-// Запускаем снеговика
-animateSnowman();
-// --- 3D-параллакс с годом на фоне ---
-const bgYear = document.createElement('div');
-bgYear.id = 'parallax-year';
-bgYear.textContent = new Date().getFullYear() + 1; // Автоматически ставит следующий год (2027)
-document.body.appendChild(bgYear);
-
-// Движение фона за мышкой
-document.addEventListener('mousemove', (e) => {
-    // Вычисляем смещение (максимум 30 пикселей в стороны)
-    const x = (e.clientX / window.innerWidth - 0.5) * 30;
-    const y = (e.clientY / window.innerHeight - 0.5) * 30;
-    
-    // Сдвигаем фон в противоположную от мышки сторону
-    bgYear.style.transform = `translate(calc(-50% + ${-x}px), calc(-50% + ${-y}px))`;
-});
-// --- Голосовой таймер (Text-to-Speech) ---
-const speechBtn = document.createElement('button');
-speechBtn.id = 'speech-btn';
-speechBtn.innerHTML = '🗣️';
-speechBtn.title = 'Озвучить время';
-document.body.appendChild(speechBtn);
-
-speechBtn.addEventListener('click', function() {
-    // Берем текущие значения из блоков
-    const days = document.getElementById('days').textContent;
-    const hours = document.getElementById('hours').textContent;
-    const minutes = document.getElementById('minutes').textContent;
-    const seconds = document.getElementById('seconds').textContent;
-    
-    // Формируем текст
-    const text = `Внимание! До Нового года осталось ${days} дней, ${hours} часов, ${minutes} минут и ${seconds} секунд.`;
-    
-    // Создаем объект речи
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ru-RU'; // Устанавливаем русский язык
-    utterance.rate = 0.9; // Скорость речи (чуть медленнее для пафоса)
-    
-    // Отменяем предыдущую речь, если она еще идет, и говорим новую
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-});
-// --- Падающие звезды (Кометы) ---
-function createShootingStar() {
-    const star = document.createElement('div');
-    star.classList.add('shooting-star');
-    
-    // Случайная позиция появления (сверху или справа)
-    star.style.top = Math.random() * 50 + 'vh';
-    star.style.left = Math.random() * 100 + 'vw';
-    
-    // Случайная скорость полета (от 0.5 до 1.5 секунды)
-    const duration = Math.random() * 1 + 0.5;
-    star.style.animation = `shoot ${duration}s linear forwards`;
-    
-    document.body.appendChild(star);
-    
-    // Удаляем звезду после того, как она улетит
-    setTimeout(() => star.remove(), duration * 1000);
-}
-
-// Запускаем падающую звезду каждые 4 секунды (чтобы это было редкое и красивое явление)
-setInterval(createShootingStar, 4000);
-// --- Интерактивная коробка с подарком ---
-const giftBox = document.createElement('div');
-giftBox.className = 'gift-box';
-giftBox.innerHTML = '🎁';
-document.body.appendChild(giftBox);
-
-const compliments = [
-    "Ты классный программист! 💻",
-    "Твой сайт просто огонь! 🔥",
-    "Ты умница и красавица! ✨",
-    "Продолжай в том же духе! 🚀",
-    "Скоро Новый год, а ты уже молодец! 🎄"
-];
-
-giftBox.addEventListener('click', () => {
-    // Запускаем анимацию тряски
-    giftBox.classList.add('shake');
-    giftBox.innerHTML = '🎉'; // Меняем подарок на салют
-    
-    // Создаем окошко с комплиментом
-    const popup = document.createElement('div');
-    popup.className = 'compliment-popup';
-    popup.textContent = compliments[Math.floor(Math.random() * compliments.length)];
-    document.body.appendChild(popup);
-    
-    // Возвращаем подарок обратно и убираем окошко через 3 секунды
-    setTimeout(() => {
-        giftBox.classList.remove('shake');
-        giftBox.innerHTML = '🎁';
-        popup.remove();
-    }, 3000);
-});
-// --- 3D-эффект наклона блоков при наведении ---
+// --- 3D-эффект наклона ---
 const blocks = document.querySelectorAll('.block');
-
 blocks.forEach(block => {
-    // Когда мышка двигается над блоком
     block.addEventListener('mousemove', (e) => {
         const rect = block.getBoundingClientRect();
         const x = e.clientX - rect.left; 
         const y = e.clientY - rect.top;  
-        
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
-        // Вычисляем угол наклона (максимум 15 градусов)
         const rotateX = ((y - centerY) / centerY) * -15; 
         const rotateY = ((x - centerX) / centerX) * 15;  
-        
         block.style.transform = `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
     });
-    
-    // Когда мышка уходит с блока, возвращаем в исходное положение
-    block.addEventListener('mouseleave', () => {
-        block.style.transform = ''; 
-    });
+    block.addEventListener('mouseleave', () => { block.style.transform = ''; });
 });
+
 // --- Список новогодних желаний ---
 const wishInput = document.getElementById('wish-input');
 const addWishBtn = document.getElementById('add-wish-btn');
 const wishList = document.getElementById('wish-list');
 
-// Загружаем сохраненные желания
-let wishes = JSON.parse(localStorage.getItem('ny_wishes')) || [];
+if (wishInput && addWishBtn && wishList) {
+    let savedWishes = JSON.parse(localStorage.getItem('ny_wishes')) || [];
+    window.renderWishes = function() {
+        wishList.innerHTML = '';
+        savedWishes.forEach((wish, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${wish}</span><button onclick="deleteWish(${index})">✖</button>`;
+            wishList.appendChild(li);
+        });
+    };
+    window.addWish = function() {
+        const text = wishInput.value.trim();
+        if (text) {
+            savedWishes.push(text);
+            localStorage.setItem('ny_wishes', JSON.stringify(savedWishes));
+            wishInput.value = '';
+            window.renderWishes();
+        }
+    };
+    window.deleteWish = function(index) {
+        savedWishes.splice(index, 1);
+        localStorage.setItem('ny_wishes', JSON.stringify(savedWishes));
+        window.renderWishes();
+    };
+    addWishBtn.addEventListener('click', window.addWish);
+    wishInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') window.addWish(); });
+    window.renderWishes();
+}
 
-function renderWishes() {
-    wishList.innerHTML = '';
-    wishes.forEach((wish, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <span>${wish}</span>
-            <button onclick="deleteWish(${index})">✖</button>
-        `;
-        wishList.appendChild(li);
+// --- Шлейф за курсором ---
+document.addEventListener('mousemove', function(e) {
+    if (Math.random() > 0.2) return; 
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88'];
+    trail.style.background = colors[Math.floor(Math.random() * colors.length)];
+    document.body.appendChild(trail);
+    setTimeout(() => trail.remove(), 800);
+});
+
+// --- Пасхалки: Кликабельный заголовок и Глитч ---
+const h1Title = document.querySelector('h1');
+if (h1Title) {
+    const funnyTitles = ["До Нового года осталось:", "До оливье осталось:", "До мандаринов осталось:", "До салютов осталось:", "До подарков осталось:"];
+    let titleIndex = 0;
+    h1Title.style.cursor = 'pointer';
+    
+    // Клик
+    h1Title.addEventListener('click', function() {
+        titleIndex = (titleIndex + 1) % funnyTitles.length;
+        h1Title.textContent = funnyTitles[titleIndex];
+    });
+
+    // Глитч
+    const originalText = h1Title.innerText;
+    const glitchChars = '!<>-_\\/[]{}—=+*^?#________';
+    let glitchInterval = null;
+    h1Title.addEventListener('mouseover', () => {
+        let iteration = 0;
+        clearInterval(glitchInterval);
+        glitchInterval = setInterval(() => {
+            h1Title.innerText = originalText.split('').map((letter, index) => {
+                if(index < iteration) return originalText[index];
+                return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            }).join('');
+            if(iteration >= originalText.length) clearInterval(glitchInterval);
+            iteration += 1 / 3;
+        }, 30);
     });
 }
 
-function addWish() {
-    const text = wishInput.value.trim();
-    if (text) {
-        wishes.push(text);
-        localStorage.setItem('ny_wishes', JSON.stringify(wishes));
-        wishInput.value = '';
-        renderWishes();
-    }
+// --- Ускорение пульсации цифр ---
+setInterval(() => {
+    const dEl = document.getElementById('days');
+    if (!dEl) return;
+    const daysLeft = parseInt(dEl.textContent);
+    const spans = document.querySelectorAll('.block span');
+    if (daysLeft <= 0) spans.forEach(span => span.style.animationDuration = '0.3s');
+    else if (daysLeft < 10) spans.forEach(span => span.style.animationDuration = '0.6s');
+    else if (daysLeft < 30) spans.forEach(span => span.style.animationDuration = '0.8s');
+    else spans.forEach(span => span.style.animationDuration = '1s');
+}, 1000);
+
+// --- Гирлянда с пожеланиями ---
+const garlandWishes = ["Счастья в новом году! 🎄", "Пусть всё получится! ✨", "Море подарков! 🎁", "Удачи и вдохновения! 🚀", "Любви и тепла! ❤️"];
+const garland = document.querySelector('.garland');
+if (garland) {
+    garland.addEventListener('click', function(event) {
+        const bubble = document.createElement('div');
+        bubble.className = 'wish-bubble';
+        bubble.textContent = garlandWishes[Math.floor(Math.random() * garlandWishes.length)];
+        bubble.style.left = event.clientX + 'px';
+        bubble.style.top = event.clientY + 'px';
+        document.body.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 2000);
+    });
 }
 
-function deleteWish(index) {
-    wishes.splice(index, 1);
-    localStorage.setItem('ny_wishes', JSON.stringify(wishes));
-    renderWishes();
-}
-
-addWishBtn.addEventListener('click', addWish);
-wishInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addWish();
+// --- Печенье с предсказанием ---
+const fortuneBtn = document.createElement('button');
+fortuneBtn.textContent = '🥠 Предсказание';
+fortuneBtn.style.position = 'fixed'; fortuneBtn.style.bottom = '30px'; fortuneBtn.style.left = '30px';
+fortuneBtn.style.padding = '10px 20px'; fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)';
+fortuneBtn.style.color = '#ffcc00'; fortuneBtn.style.border = '2px solid #ffcc00';
+fortuneBtn.style.borderRadius = '50px'; fortuneBtn.style.cursor = 'pointer';
+fortuneBtn.style.zIndex = '10000'; fortuneBtn.style.boxShadow = '0 0 15px rgba(255, 204, 0, 0.4)';
+fortuneBtn.style.fontWeight = 'bold'; fortuneBtn.style.transition = 'all 0.3s ease';
+document.body.appendChild(fortuneBtn);
+fortuneBtn.addEventListener('mouseover', () => { fortuneBtn.style.background = '#ffcc00'; fortuneBtn.style.color = '#2d1b4e'; });
+fortuneBtn.addEventListener('mouseout', () => { fortuneBtn.style.background = 'rgba(255, 204, 0, 0.2)'; fortuneBtn.style.color = '#ffcc00'; });
+const fortunes = ["Ждет удача в учебе! 🎓", "Твой код скомпилируется с первого раза! 💻", "Найдешь что-то ценное под подушкой! 💰", "Тебя ждет незабываемое путешествие! ✈️", "Сбудутся все мечты! ✨"];
+fortuneBtn.addEventListener('click', function(event) {
+    const popup = document.createElement('div');
+    popup.textContent = fortunes[Math.floor(Math.random() * fortunes.length)];
+    popup.style.position = 'fixed'; popup.style.left = '50%'; popup.style.top = '50%';
+    popup.style.transform = 'translate(-50%, -50%) scale(0.5)';
+    popup.style.background = '#2d1b4e'; popup.style.color = '#fff';
+    popup.style.padding = '20px 40px'; popup.style.borderRadius = '20px';
+    popup.style.border = '2px solid #ffcc00'; popup.style.boxShadow = '0 0 30px rgba(255, 204, 0, 0.6)';
+    popup.style.zIndex = '10001'; popup.style.fontSize = '20px'; popup.style.fontWeight = 'bold';
+    popup.style.textAlign = 'center'; popup.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    popup.style.pointerEvents = 'none';
+    document.body.appendChild(popup);
+    requestAnimationFrame(() => { popup.style.transform = 'translate(-50%, -50%) scale(1)'; });
+    setTimeout(() => { popup.style.transform = 'translate(-50%, -50%) scale(0)'; setTimeout(() => popup.remove(), 300); }, 3000);
 });
 
-// Показываем список при загрузке
-renderWishes();
+// --- Секретное слово (Мега-салют) ---
+let secretWord = "";
+document.addEventListener('keydown', function(e) {
+    secretWord += e.key.toLowerCase();
+    if (secretWord.length > 10) secretWord = secretWord.slice(-10);
+    if (secretWord.includes("снег") || secretWord.includes("аня") || secretWord.includes("newyear")) {
+        secretWord = "";
+        const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333', '#ffffff'];
+        for (let wave = 0; wave < 10; wave++) {
+            setTimeout(() => {
+                for (let i = 0; i < 30; i++) {
+                    const spark = document.createElement('div');
+                    spark.style.position = 'fixed'; spark.style.left = Math.random() * 100 + 'vw';
+                    spark.style.top = Math.random() * 100 + 'vh'; spark.style.width = '8px'; spark.style.height = '8px';
+                    spark.style.borderRadius = '50%'; spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    spark.style.pointerEvents = 'none'; spark.style.zIndex = '99999'; spark.style.boxShadow = '0 0 15px currentColor';
+                    const angle = Math.random() * Math.PI * 2; const distance = Math.random() * 200 + 100;
+                    const x = Math.cos(angle) * distance; const y = Math.sin(angle) * distance;
+                    spark.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    spark.style.transform = 'translate(0, 0)';
+                    document.body.appendChild(spark);
+                    requestAnimationFrame(() => { spark.style.transform = `translate(${x}px, ${y}px) scale(0)`; spark.style.opacity = '0'; });
+                    setTimeout(() => spark.remove(), 1600);
+                }
+            }, wave * 200);
+        }
+    }
+});
+
+// --- Магический фонтан ---
+document.addEventListener('click', function(event) {
+    const colors = ['#ff00ff', '#00ffff', '#ffcc00', '#00ff88', '#ff3333'];
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed'; particle.style.left = event.clientX + 'px'; particle.style.top = event.clientY + 'px';
+        particle.style.width = '6px'; particle.style.height = '6px'; particle.style.borderRadius = '50%';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.pointerEvents = 'none'; particle.style.zIndex = '99999'; particle.style.boxShadow = '0 0 10px currentColor';
+        document.body.appendChild(particle);
+        const angle = Math.random() * Math.PI - Math.PI; const velocity = Math.random() * 15 + 10;
+        let posX = event.clientX; let posY = event.clientY;
+        let velX = Math.cos(angle) * velocity * (Math.random() > 0.5 ? 1 : -1); let velY = Math.sin(angle) * velocity;
+        const animateParticle = () => {
+            posX += velX; posY += velY; velY += 0.5; 
+            particle.style.left = posX + 'px'; particle.style.top = posY + 'px';
+            particle.style.opacity = Math.max(0, 1 - (posY - event.clientY) / 300);
+            if (posY < window.innerHeight && particle.style.opacity > 0) requestAnimationFrame(animateParticle);
+            else particle.remove();
+        };
+        requestAnimationFrame(animateParticle);
+    }
+});
+
+// --- Летающий снеговик ---
+const snowman = document.createElement('div');
+snowman.innerHTML = '☃️'; snowman.style.position = 'fixed'; snowman.style.fontSize = '40px';
+snowman.style.pointerEvents = 'none'; snowman.style.zIndex = '9997'; snowman.style.transition = 'transform 0.3s ease';
+document.body.appendChild(snowman);
+let snowX = Math.random() * (window.innerWidth - 50); let snowY = Math.random() * (window.innerHeight - 50);
+let velX = 2.5; let velY = 2.5;
+function animateSnowman() {
+    snowX += velX; snowY += velY;
+    if (snowX + 40 > window.innerWidth || snowX < 0) { velX = -velX; snowman.style.transform = `rotate(${Math.random() * 360}deg)`; }
+    if (snowY + 40 > window.innerHeight || snowY < 0) { velY = -velY; snowman.style.transform = `rotate(${Math.random() * 360}deg)`; }
+    snowman.style.left = snowX + 'px'; snowman.style.top = snowY + 'px';
+    requestAnimationFrame(animateSnowman);
+}
+animateSnowman();
+
+// --- 3D-параллакс с годом ---
+const bgYear = document.createElement('div');
+bgYear.id = 'parallax-year'; bgYear.textContent = new Date().getFullYear() + 1;
+document.body.appendChild(bgYear);
+document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 30; const y = (e.clientY / window.innerHeight - 0.5) * 30;
+    bgYear.style.transform = `translate(calc(-50% + ${-x}px), calc(-50% + ${-y}px))`;
+});
+
+// --- Голосовой таймер ---
+const speechBtn = document.createElement('button');
+speechBtn.id = 'speech-btn'; speechBtn.innerHTML = '🗣️'; speechBtn.title = 'Озвучить время';
+document.body.appendChild(speechBtn);
+speechBtn.addEventListener('click', function() {
+    const days = document.getElementById('days').textContent; const hours = document.getElementById('hours').textContent;
+    const minutes = document.getElementById('minutes').textContent; const seconds = document.getElementById('seconds').textContent;
+    const text = `Внимание! До Нового года осталось ${days} дней, ${hours} часов, ${minutes} минут и ${seconds} секунд.`;
+    const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'ru-RU'; utterance.rate = 0.9;
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(utterance);
+});
+
+// --- Коробка с подарком ---
+const giftBox = document.createElement('div');
+giftBox.className = 'gift-box'; giftBox.innerHTML = '🎁'; document.body.appendChild(giftBox);
+const compliments = ["Ты классный программист! 💻", "Твой сайт просто огонь! 🔥", "Ты умница и красавица! ✨", "Продолжай в том же духе! 🚀"];
+giftBox.addEventListener('click', () => {
+    giftBox.classList.add('shake'); giftBox.innerHTML = '🎉';
+    const popup = document.createElement('div'); popup.className = 'compliment-popup';
+    popup.textContent = compliments[Math.floor(Math.random() * compliments.length)];
+    document.body.appendChild(popup);
+    setTimeout(() => { giftBox.classList.remove('shake'); giftBox.innerHTML = '🎁'; popup.remove(); }, 3000);
+});
+
 // --- Летающий Дед Мороз ---
 function launchSanta() {
-    const santa = document.createElement('div');
-    santa.className = 'santa-sleigh';
-    santa.innerHTML = '🎅🏼🛷✨'; // Дед Мороз, сани и искры
-    document.body.appendChild(santa);
-    
-    // Удаляем элемент через 12 секунд (когда анимация закончится)
-    setTimeout(() => santa.remove(), 12000);
+    const santa = document.createElement('div'); santa.className = 'santa-sleigh'; santa.innerHTML = '🎅🏼🛷✨';
+    document.body.appendChild(santa); setTimeout(() => santa.remove(), 12000);
 }
+setTimeout(launchSanta, 3000); setInterval(launchSanta, 45000);
 
-// Запускаем Деда Мороза через 3 секунды после загрузки страницы
-setTimeout(launchSanta, 3000);
-
-// И потом запускаем каждые 45 секунд, чтобы это было приятным сюрпризом, а не мельтешением
-setInterval(launchSanta, 45000);
 // --- Небесные фонарики ---
 function createLantern() {
-    const lantern = document.createElement('div');
-    lantern.className = 'sky-lantern';
-    
-    // Используем эмодзи фонарика или свечи
-    lantern.innerHTML = '🏮'; 
-    
-    // Случайная позиция по горизонтали
-    lantern.style.left = Math.random() * 100 + 'vw';
-    
-    // Случайный размер (от 20 до 50 пикселей)
-    lantern.style.fontSize = Math.random() * 30 + 20 + 'px';
-    
-    // Случайная скорость подъема (от 8 до 15 секунд)
-    const duration = Math.random() * 7 + 8;
-    
-    // Применяем анимацию
-    lantern.style.animation = `floatUp ${duration}s linear forwards`;
-    
-    document.body.appendChild(lantern);
-    
-    // Удаляем фонарик через время, когда он улетит
-    setTimeout(() => lantern.remove(), duration * 1000);
+    const lantern = document.createElement('div'); lantern.className = 'sky-lantern'; lantern.innerHTML = '🏮'; 
+    lantern.style.left = Math.random() * 100 + 'vw'; lantern.style.fontSize = Math.random() * 30 + 20 + 'px';
+    const duration = Math.random() * 7 + 8; lantern.style.animation = `floatUp ${duration}s linear forwards`;
+    document.body.appendChild(lantern); setTimeout(() => lantern.remove(), duration * 1000);
 }
-
-// Запускаем по одному фонарику каждые 5 секунд
 setInterval(createLantern, 5000);
