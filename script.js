@@ -12,7 +12,7 @@ const quotes = [
     "Ты способна на большее, чем думаешь.",
     "Код — это творчество. Твори!",
     "Маленькие шаги ведут к большим целям."
-];
+]; 
 const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 const quoteElement = document.getElementById('quote');
 let charIndex = 0;
